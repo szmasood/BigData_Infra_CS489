@@ -28,7 +28,7 @@ hadoop fs -cat output/* | awk -F '\t' '{print $2,$1}' | sort -g
 * 3.5971175897745367 (anjou, maine)
 * 3.5971175897745367 (maine, anjou)
 
-Both pairs have the same PMI because PMI is symmetrical. Since the log base 10 function is increasing, PMI is larger as P(x,y) increases and P(x)P(y) decreases. Maine of anjou is a name, that is always cooccurring on the same line. This is why it has the highest PMI.
+Both pairs have the same PMI because PMI is symmetrical. Since the log base 10 function is increasing, PMI is larger as P(x,y) increases and P(x)P(y) decreases. Maine of anjou is a name that is most likely always cooccurring together on the same line. This would cause it to P(x)P(y) to be very low as they probably don't appear much by their own and P(x,y) to be higher since when they do, they are together.
 
 6
 --
