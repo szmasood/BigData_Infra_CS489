@@ -21,6 +21,7 @@ Running time of complete stripes without combiners: (6.79 + 20.496) = 27.286 sec
 4
 --
 77198 pairs found using hadoop fs -cat output/* | wc -l
+38599 distinct pairs 
 
 5
 --
