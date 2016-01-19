@@ -25,8 +25,8 @@ Running time of complete stripes without combiners: (6.79 + 20.496) = 27.286 sec
 5
 --
 hadoop fs -cat output/* | awk -F '\t' '{print $2,$1}' | sort -g
-3.5971175897745367 (anjou, maine)
-3.5971175897745367 (maine, anjou)
+* 3.5971175897745367 (anjou, maine)
+* 3.5971175897745367 (maine, anjou)
 
 Both pairs have the same PMI because PMI is symmetrical. Since the log base 10 function is increasing, PMI is larger as P(x,y) increases and P(x)P(y) decreases. Maine of anjou is a name, that is always cooccurring on the same line. This is why it has the highest PMI.
 
@@ -36,17 +36,17 @@ Three words that have highest PMI with "tears"
 
 hadoop fs -cat output/* | awk -F '\t' '{print $2,$1}' | sort -n | grep tears
 
-2.075765364455672 (tears, shed)
-2.016787504496334 (tears, salt)
-1.1291422518865388 (tears, eyes)
+* 2.075765364455672 (tears, shed)
+* 2.016787504496334 (tears, salt)
+* 1.1291422518865388 (tears, eyes)
 
 Three words that have highest PMI with "death"
 
 hadoop fs -cat output/* | awk -F '\t' '{print $2,$1}' | sort -n | grep death
 
-1.0842273179991668 (death, father's)
-0.718134676579124 (death, die)
-0.7021098794516143 (death, life)
+* 1.0842273179991668 (death, father's)
+* 0.718134676579124 (death, die)
+* 0.7021098794516143 (death, life)
 
 7
 --
@@ -54,14 +54,14 @@ Three words that have the highest PMI with "waterloo"
 
 hadoop fs -cat cs489-2016w-lintool-a1-wiki-pairs/* | awk -F '\t' '{print $2,$1}' | sort -g  | grep waterloo
 
-2.5903570410779904 (waterloo, kitchener) 
-2.5019584868335034 (waterloo, laurier) 
-1.869501194648779 (waterloo, napoleon)
+* 2.5903570410779904 (waterloo, kitchener) 
+* 2.5019584868335034 (waterloo, laurier) 
+* 1.869501194648779 (waterloo, napoleon)
 
 Three words that have the highest PMI with "toronto"
 
 hadoop fs -cat cs489-2016w-lintool-a1-wiki-pairs/* | awk -F '\t' '{print $2,$1}' | sort -g  | grep toronto
 
-2.342780899574024 (toronto, marlboros)  
-2.3049923386846243 (toronto, spadina)  
-2.2908112659130637 (toronto, leafs)
+* 2.342780899574024 (toronto, marlboros)  
+* 2.3049923386846243 (toronto, spadina)  
+* 2.2908112659130637 (toronto, leafs)
