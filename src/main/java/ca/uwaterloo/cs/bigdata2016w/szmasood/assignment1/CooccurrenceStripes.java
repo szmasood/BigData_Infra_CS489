@@ -129,9 +129,9 @@ public class CooccurrenceStripes extends Configured implements Tool {
                 String k = entry.getKey();
 
                 if (map.get(k) >= 10) {
-                    if (wordCounts.containsKey(key.toString().trim()) && wordCounts.containsKey(k.trim())) {
-                        int px = wordCounts.get(key.toString().trim());
-                        int py = wordCounts.get(k.trim());
+                    if (wordCounts.containsKey(key.toString()) && wordCounts.containsKey(k)) {
+                        int px = wordCounts.get(key.toString());
+                        int py = wordCounts.get(k);
                         pmi = Math.log10 (((double)(map.get(k))/(px * py)) * wordCounts.get("numLines*"));
                         writeMap.put(k, (float) pmi);
                     }
