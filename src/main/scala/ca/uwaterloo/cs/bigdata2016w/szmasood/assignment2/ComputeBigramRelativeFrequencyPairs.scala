@@ -67,7 +67,7 @@ object ComputeBigramRelativeFrequencyPairs extends Tokenizer {
         }
       })
       .reduceByKey(_+_)
-      .repartitionAndSortWithinPartitions(new LeftKeyPartitioner(args.reducers()*4*4))
+      .repartitionAndSortWithinPartitions(new LeftKeyPartitioner(args.reducers()))
       .mapPartitions(bi => {
         var bigram = new Bigram("","")
         var res = ListBuffer [(String)]()
