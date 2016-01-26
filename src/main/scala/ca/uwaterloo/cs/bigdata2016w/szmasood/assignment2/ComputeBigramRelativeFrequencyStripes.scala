@@ -31,47 +31,31 @@ object ComputeBigramRelativeFrequencyStripes extends Tokenizer {
     val textFile = sc.textFile(args.input())
     val counts = textFile.flatMap(line => {
         val tokens = tokenize(line)
-        val stripes = scala.collection.mutable.HashMap[String, scala.collection.mutable.HashMap [String,Float]]()
-        var stripe = scala.collection.mutable.HashMap.empty[String,Float]
+        val stripes = new scala.collection.mutable.HashMap[String, scala.collection.mutable.HashMap [String,Float]]()
         var prev = ""
         var curr = ""
         if (tokens.length > 1) {
           for (i <- 1 until tokens.length) {
-            prev = tokens(i-1)
+            prev = tokens(i - 1)
             curr = tokens(i)
-            if (stripes.contains(prev)){
-              stripe = stripes(prev)
-              if (stripe.contains(curr)) {
-                stripe(curr) = stripe(curr) + 1f
-              }
-              else {
-                stripe += curr -> 1f
-              }
-            }
-            else {
-              stripe = scala.collection.mutable.HashMap.empty [String,Float]
-              stripe += curr -> 1
-              stripes += prev -> stripe
-            }
-          }
 
-          stripes.toSeq
+            val stripe = stripes.getOrElse(prev, HashMap[String, Float]())
+            stripe.put(curr, stripe.getOrElse(curr, 0f) + 1f)
+            stripes.put(prev, stripe)
+          }
+          stripes.toIterator
         }
         else {
-          stripes.toSeq
+          Iterator()
         }
       })
       .reduceByKey((a,b)=> {
-          for (k <- a.keySet){
-            if (b.contains(k)) {
-              b(k) = b(k) + a(k)
-            }
-            else {
-              b += k -> a(k)
-            }
+          for (k <- b.keySet){
+            val sum = a.getOrElse(k, 0.0f) + b(k)
+            a.put (k, sum)
           }
-          b
-        }, args.reducers())
+          a
+        })
         .map (r => {
           val stripe = scala.collection.mutable.HashMap [String,Float] ()
           var sum = 0f
