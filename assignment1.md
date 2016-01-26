@@ -67,3 +67,44 @@ hadoop fs -cat cs489-2016w-lintool-a1-wiki-pairs/* | awk -F '\t' '{print $2,$1}'
 * 2.342780899574024 (toronto, marlboros)  
 * 2.3049923386846243 (toronto, spadina)  
 * 2.2908112659130637 (toronto, leafs)
+
+
+Q4p			1.5
+
+Q4s			1.5
+
+Q5p			1.5
+
+Q5s			1.5
+
+Q6.1p		1.5
+
+Q6.1s		1.5
+
+Q6.2p		1.5
+
+Q6.2s		1.5
+
+Q7.1p		0
+
+Q7.1s		0
+
+Q7.2p		0
+
+Q7.2s		0
+
+linux p		4
+
+linux s		4
+
+alti p		0
+
+alti s		0
+
+notes		
+
+total		36
+
+p stands for pair, s for stripe. linux p stands for run and compile pair in linux. 
+
+If you have any question regarding to A1, plz come to DC3305 3~5pm on Friday (29th).
