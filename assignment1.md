@@ -85,25 +85,25 @@ Q6.2p		1.5
 
 Q6.2s		1.5
 
-Q7.1p		0
+Q7.1p		1.5
 
-Q7.1s		0
+Q7.1s		1.5
 
-Q7.2p		0
+Q7.2p		1.5
 
-Q7.2s		0
+Q7.2s		1.5
 
 linux p		4
 
 linux s		4
 
-alti p		0
+alti p		4
 
-alti s		0
+alti s		4
 
 notes		
 
-total		36
+total		50
 
 p stands for pair, s for stripe. linux p stands for run and compile pair in linux. 
 
