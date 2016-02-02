@@ -131,7 +131,8 @@ public class BooleanRetrievalCompressed extends Configured implements Tool {
     collection.seek(offset);
     BufferedReader reader = new BufferedReader(new InputStreamReader(collection));
 
-    return reader.readLine();
+    String d = reader.readLine();
+    return d.length() > 80 ? d.substring(0, 80) + "..." : d;
   }
 
   public static class Args {
