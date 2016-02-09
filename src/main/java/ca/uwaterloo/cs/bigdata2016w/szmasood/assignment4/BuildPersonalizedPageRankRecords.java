@@ -1,6 +1,7 @@
 package ca.uwaterloo.cs.bigdata2016w.szmasood.assignment4;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.apache.commons.cli.CommandLine;
@@ -27,6 +28,7 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.log4j.Logger;
 
+import tl.lin.data.array.ArrayListOfFloatsWritable;
 import tl.lin.data.array.ArrayListOfIntsWritable;
 
 /**
@@ -47,21 +49,30 @@ public class BuildPersonalizedPageRankRecords extends Configured implements Tool
     private static class MyMapper extends Mapper<LongWritable, Text, IntWritable, PageRankNode> {
         private static final IntWritable nid = new IntWritable();
         private static final PageRankNode node = new PageRankNode();
-        private static final Text soureNode = new Text();
+        private static ArrayList<String> sourceNode = null;
 
         @Override
         public void setup(Mapper<LongWritable, Text, IntWritable, PageRankNode>.Context context) {
             int n = context.getConfiguration().getInt(NODE_CNT_FIELD, 0);
             String s = context.getConfiguration().get(SOURCE_NODES,"");
-            String firstSource = s.split(",")[0];
+            String [] srces = s.split(",");
+            sourceNode = new ArrayList<>();
+            for (String sr : srces) {
+                sourceNode.add(sr);
+            }
 
             if (n == 0) {
                 throw new RuntimeException(NODE_CNT_FIELD + " cannot be 0!");
             }
 
-            soureNode.set(firstSource);
             node.setType(PageRankNode.Type.Complete);
-            node.setPageRank((float) -StrictMath.log(n));
+
+            float [] f = new float[srces.length];
+            for (int i =0; i < srces.length; i++) {
+                f[i] = Float.NEGATIVE_INFINITY;
+            }
+
+            node.setPageRank(new ArrayListOfFloatsWritable(f));
         }
 
         @Override
@@ -92,13 +103,18 @@ public class BuildPersonalizedPageRankRecords extends Configured implements Tool
                 context.getCounter("graph", "numActiveNodes").increment(1);
             }
 
-            if (node.getNodeId() == Integer.parseInt(soureNode.toString())) {
-                node.setPageRank((float) StrictMath.log(1));
-            }
-            else {
-                node.setPageRank(Float.NEGATIVE_INFINITY);
-            }
+            int ind = sourceNode.indexOf(String.valueOf(node.getNodeId()));
+            float [] f = new float[sourceNode.size()];
 
+            for (int i =0; i < sourceNode.size(); i++) {
+                if (i == ind) {
+                    f[i] = (float) StrictMath.log(1);
+                }
+                else {
+                    f[i] = Float.NEGATIVE_INFINITY;
+                }
+            }
+            node.setPageRank(new ArrayListOfFloatsWritable(f));
             context.write(nid, node);
         }
     }
@@ -173,6 +189,7 @@ public class BuildPersonalizedPageRankRecords extends Configured implements Tool
         FileOutputFormat.setOutputPath(job, new Path(outputPath));
 
         job.setInputFormatClass(TextInputFormat.class);
+//        job.setOutputFormatClass(SequenceFileOutputFormat.class);
         job.setOutputFormatClass(SequenceFileOutputFormat.class);
 
         job.setMapOutputKeyClass(IntWritable.class);
