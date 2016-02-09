@@ -1,6 +1,6 @@
 Finished assignment successfully after spending 30ish hours with an addition 3 midterms and 2 assignments due this week. Not impressed with you guys right now.
 
-* Source: 73273
+Source: 73273
 * 0.15511 73273
 * 0.00437 5042916
 * 0.00332 22218
@@ -12,7 +12,7 @@ Finished assignment successfully after spending 30ish hours with an addition 3 m
 * 0.00147 3434750
 * 0.00139 178880
 
-* Source: 73276
+Source: 73276
 * 0.15578 73276
 * 0.00501 5042916
 * 0.00364 22218
