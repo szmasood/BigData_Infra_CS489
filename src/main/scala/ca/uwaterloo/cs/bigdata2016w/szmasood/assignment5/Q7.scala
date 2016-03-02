@@ -3,8 +3,6 @@ package ca.uwaterloo.cs.bigdata2016w.szmasood.assignment5;
 import org.apache.log4j._
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkConf
-import java.util.Date
-import java.text.SimpleDateFormat
 import scala.collection.mutable.ListBuffer
 
 
@@ -34,13 +32,11 @@ object Q7  {
       (sp(0), sp(1)) // (custKey, custName)
     }).collect.toMap)
 
-    val sdf = new SimpleDateFormat("yyyy-MM-dd")
-    val in_dt = sdf.parse(dt)
+
 
     val orders = sc.textFile(ordersUri)
       .filter (r => {
-        val o_orderdate = sdf.parse(r.split("\\|",-1)(4))
-        o_orderdate.before(in_dt)
+        r.split("\\|",-1)(4) < dt
       })
       .flatMap (r => {
         var res = ListBuffer [(String,(String,String,String))]()
@@ -56,8 +52,7 @@ object Q7  {
 
     val lineOrderKeys = sc.textFile(lineItemUri)
       .filter (r =>  {
-        val l_shipdate = sdf.parse(r.split("\\|",12)(10))
-        l_shipdate.after(in_dt)
+        r.split("\\|",12)(10) > dt
       })
       .map (r => {
         val sp = r.split("\\|",8)
