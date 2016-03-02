@@ -69,8 +69,9 @@ object Q4  {
       })
       .reduceByKey(_+_)
       .map (r=> (r._1._1,r._1._2,r._2))
+      .sortBy(r=> r._1)
 
-    lineOrderKeys.takeOrdered(20)(Ordering[Int].on(x=>x._1)).foreach(println)
+    lineOrderKeys.collect.foreach(println)
   }
 
 }
