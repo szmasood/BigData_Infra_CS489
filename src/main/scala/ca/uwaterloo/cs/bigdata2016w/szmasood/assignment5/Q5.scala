@@ -68,6 +68,6 @@ object Q5  {
       .reduceByKey(_+_)
       .map (r=> (r._1._1,r._1._2,r._2))
 
-    lineOrderKeys.foreach(println)
+    lineOrderKeys.collect().foreach(println)
   }
 }
