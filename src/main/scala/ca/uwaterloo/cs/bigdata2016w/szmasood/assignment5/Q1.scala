@@ -29,7 +29,7 @@ object Q1  {
     val lineItems = s"${args.input()}/lineitem.tbl"
 
     val cnt = sc.textFile(lineItems)
-      .filter (r => r.split("\\|",11)(10).contains(dt))
+      .filter (r => r.split("\\|",12)(10).contains(dt))
       .count
 
     System.out.println (s"ANSWER=${cnt}")
