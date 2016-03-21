@@ -1,5 +1,6 @@
 package ca.uwaterloo.cs.bigdata2016w.szmasood.assignment6;
 
+import org.apache.hadoop.fs.{FileSystem, Path}
 import org.apache.log4j._
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkConf
@@ -35,6 +36,9 @@ object ApplyEnsembleSpamClassifier  {
 
     val conf = new SparkConf().setAppName("ApplySpamClassifier")
     val sc = new SparkContext(conf)
+
+    val outputDir = new Path(output)
+    FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
 
     val weight_map_x = sc.broadcast(sc.textFile(s"${model}/part-00000").map(r => {
       val sp = r.replaceAll("\\(", "").replaceAll("\\)","").trim.split (",",-1)

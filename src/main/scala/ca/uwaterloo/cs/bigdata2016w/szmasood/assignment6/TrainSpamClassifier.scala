@@ -1,5 +1,6 @@
 package ca.uwaterloo.cs.bigdata2016w.szmasood.assignment6;
 
+import org.apache.hadoop.fs.{Path, FileSystem}
 import org.apache.log4j._
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkConf
@@ -32,6 +33,9 @@ object TrainSpamClassifier  {
 
     val conf = new SparkConf().setAppName("TrainSpamClassifier")
     val sc = new SparkContext(conf)
+
+    val outputDir = new Path(model)
+    FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
 
     val textFile = sc.textFile(input)
     val delta = 0.002
