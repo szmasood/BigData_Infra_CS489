@@ -2,6 +2,7 @@ package ca.uwaterloo.cs.bigdata2016w.szmasood.assignment7;
 import java.io.*;
 import java.util.*;
 
+import org.apache.commons.collections.functors.ExceptionClosure;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.*;
@@ -26,7 +27,7 @@ public class BooleanRetrievalHBase extends Configured implements Tool {
   private BooleanRetrievalHBase() {}
 
 
-  private void initialize(String indexPath, String collectionPath, FileSystem fs) throws IOException {
+  private void initialize(String collectionPath, FileSystem fs) throws IOException {
     collection = fs.open(new Path(collectionPath));
     stack = new Stack<Set<Integer>>();
   }
@@ -112,30 +113,35 @@ public class BooleanRetrievalHBase extends Configured implements Tool {
 
     Get get = new Get(Bytes.toBytes(term));
     Result result = table.get(get);
-
-    NavigableMap<byte[], byte[]> familyMap = result.getFamilyMap("p".getBytes());
-
     ArrayListWritable<PairOfInts> postings = new ArrayListWritable<>();
 
-    int counter = 0;
-    for (byte[] quant : familyMap.keySet()) {
 
-      InputStream is = new ByteArrayInputStream(result.getValue("p".getBytes(), quant));
-      DataInputStream inputBuffer = new DataInputStream(is);
+    try {
 
-      int df = WritableUtils.readVInt(inputBuffer);
+      NavigableMap<byte[], byte[]> familyMap = result.getFamilyMap("p".getBytes());
 
-      int a = 0;
-      int b = 0;
-      for (int i = 0; i < df; i++) {
-        a = WritableUtils.readVInt(inputBuffer);
-        b = WritableUtils.readVInt(inputBuffer);
-        postings.add(new PairOfInts(a,b));
+
+      int counter = 0;
+      for (byte[] quant : familyMap.keySet()) {
+
+        InputStream is = new ByteArrayInputStream(result.getValue("p".getBytes(), quant));
+        DataInputStream inputBuffer = new DataInputStream(is);
+
+        int df = WritableUtils.readVInt(inputBuffer);
+
+        int a = 0;
+        int b = 0;
+        for (int i = 0; i < df; i++) {
+          a = WritableUtils.readVInt(inputBuffer);
+          b = WritableUtils.readVInt(inputBuffer);
+          postings.add(new PairOfInts(a, b));
+        }
+
       }
+    }
+    catch (Exception e) {
 
     }
-
-
 
     return postings;
   }
@@ -149,8 +155,6 @@ public class BooleanRetrievalHBase extends Configured implements Tool {
   }
 
   public static class Args {
-    @Option(name = "-index", metaVar = "[path]", required = true, usage = "index path")
-    public String index;
 
     @Option(name = "-collection", metaVar = "[path]", required = true, usage = "collection path")
     public String collection;
@@ -187,7 +191,7 @@ public class BooleanRetrievalHBase extends Configured implements Tool {
 
     FileSystem fs = FileSystem.get(new Configuration());
 
-    initialize(args.index, args.collection, fs);
+    initialize(args.collection, fs);
 
     System.out.println("Query: " + args.query);
     long startTime = System.currentTimeMillis();
