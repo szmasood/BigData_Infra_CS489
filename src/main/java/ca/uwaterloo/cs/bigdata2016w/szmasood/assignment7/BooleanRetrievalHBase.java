@@ -106,17 +106,20 @@ public class BooleanRetrievalHBase extends Configured implements Tool {
 
     Configuration conf = getConf();
     conf.addResource(new Path(config));
-
-    Configuration hbaseConfig = HBaseConfiguration.create(conf);
-    HConnection hbaseConnection = HConnectionManager.createConnection(hbaseConfig);
-    HTableInterface table = hbaseConnection.getTable(argTable);
-
-    Get get = new Get(Bytes.toBytes(term));
-    Result result = table.get(get);
     ArrayListWritable<PairOfInts> postings = new ArrayListWritable<>();
 
 
     try {
+
+      Configuration hbaseConfig = HBaseConfiguration.create(conf);
+      HConnection hbaseConnection = HConnectionManager.createConnection(hbaseConfig);
+      HTableInterface table = hbaseConnection.getTable(argTable);
+
+      Get get = new Get(Bytes.toBytes(term));
+      Result result = table.get(get);
+
+
+
 
       NavigableMap<byte[], byte[]> familyMap = result.getFamilyMap("p".getBytes());
 
